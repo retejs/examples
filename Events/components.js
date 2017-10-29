@@ -42,14 +42,17 @@ var printComp = new D3NE.Component('print', {
             .addOutput(new D3NE.Output('', actionSocket));
     },
     worker: function (node, inputs, outputs) {
-        if (!(inputs[0][0]instanceof Caller)) 
+        if (!(inputs[0][0] instanceof Caller))
             return;
-        
+
         inputs[0].forEach(inp => {
             var caller = new Caller(function () {
-                if (!inputs[1][0].outputData) 
-                    inputs[1][0].run();
-                console.log('action ', inputs[1][0].outputData);
+                console.log('action');
+                if (inputs[1][0]) {
+                    if (!inputs[1][0].outputData)
+                        inputs[1][0].run();
+                    console.log(inputs[1][0].outputData);
+                }
             });
             inp
                 .next
