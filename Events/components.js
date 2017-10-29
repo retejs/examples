@@ -23,7 +23,7 @@ var keydownComp = new D3NE.Component('keydown event', {
     worker: function (node, inputs, outputs) {
 
         var caller = new Caller(function () {
-            console.log('event');
+            console.log('Keydown event');
         });
         document.addEventListener("keydown", function (e) {
             caller.run();
@@ -47,12 +47,13 @@ var printComp = new D3NE.Component('print', {
 
         inputs[0].forEach(inp => {
             var caller = new Caller(function () {
-                console.log('action');
                 if (inputs[1][0]) {
                     if (!inputs[1][0].outputData)
                         inputs[1][0].run();
-                    console.log(inputs[1][0].outputData);
+                    // console.log(inputs[1][0].outputData);
                 }
+
+                console.log('Print');
             });
             inp
                 .next
@@ -72,7 +73,7 @@ var dataComp = new D3NE.Component('data', {
     worker: function (node, inputs, outputs) {
 
         outputs[0] = new Caller(function () {
-            console.log('called');
+            console.log('Data');
             return "all nice";
         });
     }
