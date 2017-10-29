@@ -1,0 +1,11 @@
+#d3ne {
+    height: 100%;
+}
+
+.socket.data {
+    background: rgb(143, 125, 224)
+}
+
+.socket.act {
+    background: rgb(16, 202, 16)
+}
