@@ -31,10 +31,12 @@ class Caller {
             .inputs
             .filter(input => !(input[0]instanceof Caller))
             .map(input => {
-                if (input[0]) {
-                    input[0].run();
-                    return input[0].get();
-                }
+                return input.map(con => {
+                    if (con) {
+                        con.run();
+                        return con.get();
+                    }
+                })
             });
 
         if (!this.outputData) {
@@ -69,7 +71,7 @@ var keydownComp = new D3NE.Component('keydown event', {
 
         var caller = new Caller(inputs, function () {
             console.log('Keydown event', node.id);
-            return []
+            return ['event data']
         });
 
         document.addEventListener("keydown", function (e) {
@@ -81,7 +83,7 @@ var keydownComp = new D3NE.Component('keydown event', {
         outputs[1] = caller.applyOutput(0);
     }
 });
-
+var callCount = 0;
 var printComp = new D3NE.Component('print', {
     builder: function () {
 

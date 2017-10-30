@@ -26,6 +26,8 @@ editor.fromJSON({
                             "input": 0
                         }
                     ]
+                }, {
+                    "connections": []
                 }
             ],
             "position": [
@@ -46,136 +48,49 @@ editor.fromJSON({
                         }
                     ]
                 }, {
-                    "connections": [
-                        {
-                            "node": 6,
-                            "output": 0
-                        }
-                    ]
-                }
-            ],
-            "outputs": [
-                {
                     "connections": []
                 }
             ],
-            "position": [
-                526, 123
-            ],
-            "title": "Print"
-        },
-        "4": {
-            "id": 4,
-            "data": {},
-            "group": null,
-            "inputs": [
-                {
-                    "connections": [
-                        {
-                            "node": 5,
-                            "output": 0
-                        }
-                    ]
-                }, {
-                    "connections": [
-                        {
-                            "node": 6,
-                            "output": 1
-                        }
-                    ]
-                }
-            ],
-            "outputs": [
-                {
-                    "connections": []
-                }
-            ],
-            "position": [
-                499, 362
-            ],
-            "title": "Print"
-        },
-        "5": {
-            "id": 5,
-            "data": {},
-            "group": null,
-            "inputs": [],
             "outputs": [
                 {
                     "connections": [
                         {
-                            "node": 4,
+                            "node": 8,
                             "input": 0
                         }
                     ]
                 }
             ],
             "position": [
-                98, 462
+                443, 112
             ],
-            "title": "Keydown event"
+            "title": "Print"
         },
-        "6": {
-            "id": 6,
+        "8": {
+            "id": 8,
             "data": {},
             "group": null,
             "inputs": [
-                {
-                    "connections": [
-                        {
-                            "node": 7,
-                            "output": 0
-                        }
-                    ]
-                }
-            ],
-            "outputs": [
                 {
                     "connections": [
                         {
                             "node": 3,
-                            "input": 1
+                            "output": 0
                         }
                     ]
                 }, {
-                    "connections": [
-                        {
-                            "node": 4,
-                            "input": 1
-                        }
-                    ]
-                }
-            ],
-            "position": [
-                173, 262
-            ],
-            "title": "Data"
-        },
-        "7": {
-            "id": 7,
-            "data": {},
-            "group": null,
-            "inputs": [
-                {
                     "connections": []
                 }
             ],
             "outputs": [
                 {
-                    "connections": [
-                        {
-                            "node": 6,
-                            "input": 0
-                        }
-                    ]
-                }, {
                     "connections": []
                 }
             ],
             "position": [
-                -85, 263
+                761, 116
             ],
-            "title": "Data"
+            "title": "Print"
         }
     },
     "groups": {}
