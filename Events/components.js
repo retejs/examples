@@ -38,7 +38,7 @@ class Task {
         this.outputData = null;
     }
 
-    run() {
+    run(data) {
         var inputs = this
             .getOutputs()
             .map(input => {
@@ -51,7 +51,7 @@ class Task {
             });
 
         if (!this.outputData) {
-            this.outputData = this.action(inputs);
+            this.outputData = this.action(inputs, data);
 
             this
                 .next
@@ -78,6 +78,24 @@ class Task {
     }
 }
 
+var eventHandlers = {
+    list: [],
+    remove() {
+        this
+            .list
+            .forEach(h => {
+                document.removeEventListener("keydown", h);
+            });
+        this.list = [];
+    },
+    add(name, h) {
+        document.addEventListener(name, h, false);
+        this
+            .list
+            .push(h);
+    }
+};
+
 var keydownComp = new D3NE.Component('keydown event', {
     builder: function () {
 
@@ -88,21 +106,21 @@ var keydownComp = new D3NE.Component('keydown event', {
     },
     worker: function (node, inputs, outputs) {
 
-        var task = new Task(inputs, function () {
-            console.log('Keydown event', node.id);
+        var task = new Task(inputs, function (inps, data) {
+            console.log('Keydown event', node.id, data);
             return ['event data']
         });
-
-        document.addEventListener("keydown", function (e) {
-            task.run();
+        eventHandlers.remove();
+        eventHandlers.add("keydown", function (e) {
+            task.run(e.keyCode);
             task.reset();
-        }, false);
+        });
 
         outputs[0] = task.option(0);
         outputs[1] = task.output(0);
     }
 });
-var callCount = 0;
+
 var printComp = new D3NE.Component('print', {
     builder: function () {
 
