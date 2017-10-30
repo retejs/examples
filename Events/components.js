@@ -1,83 +1,6 @@
 var actionSocket = new D3NE.Socket("act", "Action", "hint");
 var dataSocket = new D3NE.Socket("data", "Data", "hint");
 
-class Task {
-
-    constructor(inputs, action) {
-        this.inputs = inputs;
-        this.action = action;
-        this.next = [];
-        this.outputData = null;
-        this.closed = [];
-
-        this
-            .getOptions()
-            .forEach(input => {
-                input.forEach(con => {
-                    con
-                        .task
-                        .next
-                        .push({index: con.index, task: this});
-                })
-            });
-    }
-
-    getOptions() {
-        return this
-            .inputs
-            .filter(input => input[0] && input[0].task)
-    }
-
-    getOutputs() {
-        return this
-            .inputs
-            .filter(input => input[0] && input[0].get);
-    }
-
-    reset() {
-        this.outputData = null;
-    }
-
-    run(data) {
-        var inputs = this
-            .getOutputs()
-            .map(input => {
-                return input.map(con => {
-                    if (con) {
-                        con.run();
-                        return con.get();
-                    }
-                })
-            });
-
-        if (!this.outputData) {
-            this.outputData = this.action(inputs, data);
-
-            this
-                .next
-                .filter(f => !this.closed.includes(f.index))
-                .forEach(f => f.task.run());
-        }
-    }
-
-    option(index) {
-        var task = this;
-        return {task, index}
-    }
-
-    output(index) {
-        var task = this;
-        return {
-            run: task
-                .run
-                .bind(task),
-            get() {
-                return task.outputData[index];
-            }
-        }
-    }
-}
-
 var eventHandlers = {
     list: [],
     remove() {
@@ -106,7 +29,7 @@ var keydownComp = new D3NE.Component('keydown event', {
     },
     worker: function (node, inputs, outputs) {
 
-        var task = new Task(inputs, function (inps, data) {
+        var task = new D3NE.Task(inputs, function (inps, data) {
             console.log('Keydown event', node.id, data);
             return [data]
         });
@@ -133,7 +56,7 @@ var enterpressComp = new D3NE.Component('enter pressed', {
     },
     worker: function (node, inputs, outputs) {
 
-        var task = new Task(inputs, function (inps) {
+        var task = new D3NE.Task(inputs, function (inps) {
             if (inps[0][0] == 13) 
                 this.closed = [1];
             else 
@@ -171,7 +94,7 @@ var alertComp = new D3NE.Component('alert', {
     },
     worker: function (node, inputs, outputs) {
 
-        var task = new Task(inputs, function () {
+        var task = new D3NE.Task(inputs, function () {
             console.log('Alert', node.id, node.data);
             alert(node.data.msg);
         });
