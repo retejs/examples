@@ -76,7 +76,7 @@ var alertComp = new D3NE.Component('alert', {
                 c.putData("msg", el.value);
             }
             el
-                .addEventListener("mousemove", function (e) {
+                .addEventListener("mousedown", function (e) {
                     e.stopPropagation();
                 });
             el.addEventListener("keydown", function (e) {
