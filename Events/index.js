@@ -59,6 +59,13 @@ editor.fromJSON({
                             "input": 0
                         }
                     ]
+                }, {
+                    "connections": [
+                        {
+                            "node": 9,
+                            "input": 0
+                        }
+                    ]
                 }
             ],
             "position": [
@@ -85,10 +92,40 @@ editor.fromJSON({
             "outputs": [
                 {
                     "connections": []
+                }, {
+                    "connections": []
                 }
             ],
             "position": [
-                761, 116
+                763, -10
+            ],
+            "title": "Print"
+        },
+        "9": {
+            "id": 9,
+            "data": {},
+            "group": null,
+            "inputs": [
+                {
+                    "connections": [
+                        {
+                            "node": 3,
+                            "output": 1
+                        }
+                    ]
+                }, {
+                    "connections": []
+                }
+            ],
+            "outputs": [
+                {
+                    "connections": []
+                }, {
+                    "connections": []
+                }
+            ],
+            "position": [
+                755, 208
             ],
             "title": "Print"
         }
