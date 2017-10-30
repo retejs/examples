@@ -73,8 +73,8 @@ var keydownComp = new D3NE.Component('keydown event', {
         });
 
         document.addEventListener("keydown", function (e) {
-            caller.reset();
             caller.run();
+            caller.reset();
         }, false);
 
         outputs[0] = caller;
