@@ -1,9 +1,9 @@
 var container = document.querySelector("#d3ne")
 
 var menu = new D3NE.ContextMenu({
-    'Data': dataComp.builder,
+    'Alert': alertComp.builder,
     //
-    'Print': printComp.builder,
+    'Enter pressed': enterpressComp.builder,
     //
     'Keydown': keydownComp.builder
 });
@@ -27,7 +27,12 @@ editor.fromJSON({
                         }
                     ]
                 }, {
-                    "connections": []
+                    "connections": [
+                        {
+                            "node": 3,
+                            "input": 1
+                        }
+                    ]
                 }
             ],
             "position": [
@@ -48,21 +53,26 @@ editor.fromJSON({
                         }
                     ]
                 }, {
-                    "connections": []
+                    "connections": [
+                        {
+                            "node": 2,
+                            "output": 1
+                        }
+                    ]
                 }
             ],
             "outputs": [
                 {
                     "connections": [
                         {
-                            "node": 8,
+                            "node": 10,
                             "input": 0
                         }
                     ]
                 }, {
                     "connections": [
                         {
-                            "node": 9,
+                            "node": 11,
                             "input": 0
                         }
                     ]
@@ -71,11 +81,13 @@ editor.fromJSON({
             "position": [
                 443, 112
             ],
-            "title": "Print"
+            "title": "Enter pressed"
         },
-        "8": {
-            "id": 8,
-            "data": {},
+        "10": {
+            "id": 10,
+            "data": {
+                "msg": "Enter!"
+            },
             "group": null,
             "inputs": [
                 {
@@ -85,25 +97,19 @@ editor.fromJSON({
                             "output": 0
                         }
                     ]
-                }, {
-                    "connections": []
                 }
             ],
-            "outputs": [
-                {
-                    "connections": []
-                }, {
-                    "connections": []
-                }
-            ],
+            "outputs": [],
             "position": [
-                763, -10
+                773, 106
             ],
-            "title": "Print"
+            "title": "Alert"
         },
-        "9": {
-            "id": 9,
-            "data": {},
+        "11": {
+            "id": 11,
+            "data": {
+                "msg": "Another key pressed"
+            },
             "group": null,
             "inputs": [
                 {
@@ -113,21 +119,13 @@ editor.fromJSON({
                             "output": 1
                         }
                     ]
-                }, {
-                    "connections": []
                 }
             ],
-            "outputs": [
-                {
-                    "connections": []
-                }, {
-                    "connections": []
-                }
-            ],
+            "outputs": [],
             "position": [
-                755, 208
+                766, 292
             ],
-            "title": "Print"
+            "title": "Alert"
         }
     },
     "groups": {}
@@ -144,10 +142,4 @@ function getNode(id) {
     return editor
         .nodes
         .find(n => n.id == id);
-}
-
-var overr = editor.view.getTemplate;
-
-editor.view.getTemplate = function (node) {
-    return '<id>{{node.id}}</id>' + overr.call(editor.view, node);
 }

@@ -102,13 +102,13 @@ var keydownComp = new D3NE.Component('keydown event', {
         return new D3NE
             .Node('Keydown event')
             .addOutput(new D3NE.Output('', actionSocket))
-            .addOutput(new D3NE.Output('Data', dataSocket));
+            .addOutput(new D3NE.Output('Key code', dataSocket));
     },
     worker: function (node, inputs, outputs) {
 
         var task = new Task(inputs, function (inps, data) {
             console.log('Keydown event', node.id, data);
-            return ['event data']
+            return [data]
         });
         eventHandlers.remove();
         eventHandlers.add("keydown", function (e) {
@@ -121,20 +121,23 @@ var keydownComp = new D3NE.Component('keydown event', {
     }
 });
 
-var printComp = new D3NE.Component('print', {
+var enterpressComp = new D3NE.Component('enter pressed', {
     builder: function () {
 
         return new D3NE
-            .Node('Print')
+            .Node('Enter pressed')
             .addInput(new D3NE.Input('', actionSocket))
-            .addInput(new D3NE.Input('Data', dataSocket))
-            .addOutput(new D3NE.Output('', actionSocket))
-            .addOutput(new D3NE.Output('', actionSocket));
+            .addInput(new D3NE.Input('Key code', dataSocket))
+            .addOutput(new D3NE.Output('Tren', actionSocket))
+            .addOutput(new D3NE.Output('Else', actionSocket));
     },
     worker: function (node, inputs, outputs) {
 
         var task = new Task(inputs, function (inps) {
-            this.closed = [0];
+            if (inps[0][0] == 13) 
+                this.closed = [1];
+            else 
+                this.closed = [0];
             console.log('Print', node.id, inps);
         });
         outputs[0] = task.option(0);
@@ -142,25 +145,37 @@ var printComp = new D3NE.Component('print', {
     }
 });
 
-var dataComp = new D3NE.Component('data', {
+var alertComp = new D3NE.Component('alert', {
     builder: function () {
 
+        var ctrl = new D3NE.Control('<input type="text" value="Message...">', (el, c) => {
+            function upd() {
+                c.putData("msg", el.value);
+            }
+            el
+                .addEventListener("mousemove", function (e) {
+                    e.stopPropagation();
+                });
+            el.addEventListener("keydown", function (e) {
+                e.stopPropagation();
+            });
+            el.value = c.getData('msg');
+            el.addEventListener("change", upd);
+            upd();
+        });
+
         return new D3NE
-            .Node('Data')
-            .addInput(new D3NE.Input('', dataSocket))
-            .addOutput(new D3NE.Output('', dataSocket))
-            .addOutput(new D3NE.Output('', dataSocket));
+            .Node('Alert')
+            .addControl(ctrl)
+            .addInput(new D3NE.Input('', actionSocket));
     },
     worker: function (node, inputs, outputs) {
 
-        var task = new Task(inputs, function (inps) {
-
-            console.log('Data', node.id, inps);
-            return ["first", "second"];
+        var task = new Task(inputs, function () {
+            console.log('Alert', node.id, node.data);
+            alert(node.data.msg);
         });
-        outputs[0] = task.output(0);
-        outputs[1] = task.output(1);
     }
 });
 
-var components = [keydownComp, printComp, dataComp];
+var components = [keydownComp, enterpressComp, alertComp];
