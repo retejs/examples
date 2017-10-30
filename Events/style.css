@@ -7,7 +7,9 @@
 }
 
 .socket.act {
-    background: rgb(16, 202, 16)
+    background: rgb(16, 202, 16);
+    border-radius: 0 !important;
+    width: 16px !important;
 }
 
 id {

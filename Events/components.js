@@ -1,20 +1,41 @@
 var actionSocket = new D3NE.Socket("act", "Action", "hint");
 var dataSocket = new D3NE.Socket("data", "Data", "hint");
 
-var Caller = function (workerInputs, act) {
+class Caller {
 
-    this.action = act;
-    this.next = [];
-    this.outputData = null;
-    this.run = function () {
-        //this.prev.forEach(f => f.run());
+    constructor(inputs, action) {
 
-        var inputs = workerInputs.map(inp => {
-            if (inp[0] && inp[0]instanceof CallerOut) {
-                inp[0].run();
-                return inp[0].get();
-            }
-        });
+        this.inputs = inputs;
+        this.action = action;
+        this.next = [];
+        this.outputData = null;
+
+        this
+            .inputs
+            .filter(input => input[0]instanceof Caller)
+            .forEach(input => {
+                input.forEach(inputCons => {
+                    inputCons
+                        .next
+                        .push(this);
+                })
+            });
+    }
+
+    reset() {
+        this.outputData = null;
+    }
+
+    run() {
+        var inputs = this
+            .inputs
+            .filter(input => !(input[0]instanceof Caller))
+            .map(input => {
+                if (input[0]) {
+                    input[0].run();
+                    return input[0].get();
+                }
+            });
 
         if (!this.outputData) {
             this.outputData = this.action(inputs);
@@ -23,14 +44,17 @@ var Caller = function (workerInputs, act) {
                 .forEach(f => f.run());
         }
     }
-}
 
-var CallerOut = function (index, caller) {
-    this.run = function () {
-        caller.run();
-    }
-    this.get = function () {
-        return caller.outputData[index];
+    applyOutput(index) {
+        var caller = this;
+        return {
+            run: caller
+                .run
+                .bind(caller),
+            get() {
+                return caller.outputData[index];
+            }
+        }
     }
 }
 
@@ -45,13 +69,16 @@ var keydownComp = new D3NE.Component('keydown event', {
 
         var caller = new Caller(inputs, function () {
             console.log('Keydown event', node.id);
-            return ['event data']
+            return []
         });
+
         document.addEventListener("keydown", function (e) {
+            caller.reset();
             caller.run();
         }, false);
+
         outputs[0] = caller;
-        outputs[1] = new CallerOut(0, caller);
+        outputs[1] = caller.applyOutput(0);
     }
 });
 
@@ -69,18 +96,9 @@ var printComp = new D3NE.Component('print', {
             return;
         
         var caller = new Caller(inputs, function (inps) {
-            if (inputs[1][0]) {
-
-                inputs[1][0].run();
-                console.log(inputs[1][0].get());
-            }
 
             console.log('Print', node.id, inps);
         });
-
-        inputs[0][0]
-            .next
-            .push(caller);
         outputs[0] = caller;
     }
 });
@@ -98,10 +116,10 @@ var dataComp = new D3NE.Component('data', {
         var caller = new Caller(inputs, function (inps) {
 
             console.log('Data', node.id, inps);
-            return ["all nice", "second"];
+            return ["first", "second"];
         });
-        outputs[0] = new CallerOut(0, caller);
-        outputs[1] = new CallerOut(1, caller);
+        outputs[0] = caller.applyOutput(0);
+        outputs[1] = caller.applyOutput(1);
     }
 });
 
