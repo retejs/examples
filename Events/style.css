@@ -9,3 +9,10 @@
 .socket.act {
     background: rgb(16, 202, 16)
 }
+
+id {
+    position: absolute;
+    left: -6px;
+    top: -6px;
+    background: white;
+}

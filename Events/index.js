@@ -29,7 +29,7 @@ editor.fromJSON({
                 }
             ],
             "position": [
-                152, 157
+                114, 133
             ],
             "title": "Keydown event"
         },
@@ -80,7 +80,7 @@ editor.fromJSON({
                     "connections": [
                         {
                             "node": 6,
-                            "output": 0
+                            "output": 1
                         }
                     ]
                 }
@@ -91,7 +91,7 @@ editor.fromJSON({
                 }
             ],
             "position": [
-                459, 354
+                499, 362
             ],
             "title": "Print"
         },
@@ -111,7 +111,7 @@ editor.fromJSON({
                 }
             ],
             "position": [
-                111, 391
+                98, 462
             ],
             "title": "Keydown event"
         },
@@ -119,14 +119,27 @@ editor.fromJSON({
             "id": 6,
             "data": {},
             "group": null,
-            "inputs": [],
+            "inputs": [
+                {
+                    "connections": [
+                        {
+                            "node": 7,
+                            "output": 0
+                        }
+                    ]
+                }
+            ],
             "outputs": [
                 {
                     "connections": [
                         {
                             "node": 3,
                             "input": 1
-                        }, {
+                        }
+                    ]
+                }, {
+                    "connections": [
+                        {
                             "node": 4,
                             "input": 1
                         }
@@ -134,7 +147,33 @@ editor.fromJSON({
                 }
             ],
             "position": [
-                202, 264
+                173, 262
+            ],
+            "title": "Data"
+        },
+        "7": {
+            "id": 7,
+            "data": {},
+            "group": null,
+            "inputs": [
+                {
+                    "connections": []
+                }
+            ],
+            "outputs": [
+                {
+                    "connections": [
+                        {
+                            "node": 6,
+                            "input": 0
+                        }
+                    ]
+                }, {
+                    "connections": []
+                }
+            ],
+            "position": [
+                -85, 263
             ],
             "title": "Data"
         }
@@ -153,4 +192,10 @@ function getNode(id) {
     return editor
         .nodes
         .find(n => n.id == id);
+}
+
+var overr = editor.view.getTemplate;
+
+editor.view.getTemplate = function (node) {
+    return '<id>{{node.id}}</id>' + overr.call(editor.view, node);
 }
