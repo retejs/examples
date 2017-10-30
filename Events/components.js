@@ -1,10 +1,9 @@
 var actionSocket = new D3NE.Socket("act", "Action", "hint");
 var dataSocket = new D3NE.Socket("data", "Data", "hint");
 
-class Caller {
+class Task {
 
     constructor(inputs, action) {
-
         this.inputs = inputs;
         this.action = action;
         this.next = [];
@@ -12,16 +11,27 @@ class Caller {
         this.closed = [];
 
         this
-            .inputs
-            .filter(input => input[0] && input[0].caller)
+            .getOptions()
             .forEach(input => {
                 input.forEach(con => {
                     con
-                        .caller
+                        .task
                         .next
-                        .push({index: con.index, caller: this});
+                        .push({index: con.index, task: this});
                 })
             });
+    }
+
+    getOptions() {
+        return this
+            .inputs
+            .filter(input => input[0] && input[0].task)
+    }
+
+    getOutputs() {
+        return this
+            .inputs
+            .filter(input => input[0] && input[0].get);
     }
 
     reset() {
@@ -30,8 +40,7 @@ class Caller {
 
     run() {
         var inputs = this
-            .inputs
-            .filter(input => input[0] && input[0].get)
+            .getOutputs()
             .map(input => {
                 return input.map(con => {
                     if (con) {
@@ -47,23 +56,23 @@ class Caller {
             this
                 .next
                 .filter(f => !this.closed.includes(f.index))
-                .forEach(f => f.caller.run());
+                .forEach(f => f.task.run());
         }
     }
 
     option(index) {
-        var caller = this;
-        return {caller, index}
+        var task = this;
+        return {task, index}
     }
 
     output(index) {
-        var caller = this;
+        var task = this;
         return {
-            run: caller
+            run: task
                 .run
-                .bind(caller),
+                .bind(task),
             get() {
-                return caller.outputData[index];
+                return task.outputData[index];
             }
         }
     }
@@ -71,6 +80,7 @@ class Caller {
 
 var keydownComp = new D3NE.Component('keydown event', {
     builder: function () {
+
         return new D3NE
             .Node('Keydown event')
             .addOutput(new D3NE.Output('', actionSocket))
@@ -78,18 +88,18 @@ var keydownComp = new D3NE.Component('keydown event', {
     },
     worker: function (node, inputs, outputs) {
 
-        var caller = new Caller(inputs, function () {
+        var task = new Task(inputs, function () {
             console.log('Keydown event', node.id);
             return ['event data']
         });
 
         document.addEventListener("keydown", function (e) {
-            caller.run();
-            caller.reset();
+            task.run();
+            task.reset();
         }, false);
 
-        outputs[0] = caller.option(0);
-        outputs[1] = caller.output(0);
+        outputs[0] = task.option(0);
+        outputs[1] = task.output(0);
     }
 });
 var callCount = 0;
@@ -105,12 +115,12 @@ var printComp = new D3NE.Component('print', {
     },
     worker: function (node, inputs, outputs) {
 
-        var caller = new Caller(inputs, function (inps) {
+        var task = new Task(inputs, function (inps) {
             this.closed = [0];
             console.log('Print', node.id, inps);
         });
-        outputs[0] = caller.option(0);
-        outputs[1] = caller.option(1);
+        outputs[0] = task.option(0);
+        outputs[1] = task.option(1);
     }
 });
 
@@ -124,13 +134,14 @@ var dataComp = new D3NE.Component('data', {
             .addOutput(new D3NE.Output('', dataSocket));
     },
     worker: function (node, inputs, outputs) {
-        var caller = new Caller(inputs, function (inps) {
+
+        var task = new Task(inputs, function (inps) {
 
             console.log('Data', node.id, inps);
             return ["first", "second"];
         });
-        outputs[0] = caller.output(0);
-        outputs[1] = caller.output(1);
+        outputs[0] = task.output(0);
+        outputs[1] = task.output(1);
     }
 });
 
