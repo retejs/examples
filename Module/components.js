@@ -1,4 +1,4 @@
-var moduleManager = new ModuleManager(['Input'], ['Output']);
+var moduleManager = new D3NE.ModuleManager(['Input'], ['Output']);
 
 function _createFieldControl(type, value, key, placeholder = '') {
     return new D3NE.Control(
