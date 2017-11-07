@@ -1,5 +1,5 @@
-var actionSocket = new D3NE.Socket("act", "Action", "hint");
-var dataSocket = new D3NE.Socket("data", "Data", "hint");
+var actionSocket = new D3NE.Socket('act', 'Action', 'hint');
+var dataSocket = new D3NE.Socket('data', 'Data', 'hint');
 
 var eventHandlers = {
     list: [],
@@ -7,7 +7,7 @@ var eventHandlers = {
         this
             .list
             .forEach(h => {
-                document.removeEventListener("keydown", h);
+                document.removeEventListener('keydown', h);
             });
         this.list = [];
     },
@@ -33,8 +33,9 @@ var keydownComp = new D3NE.Component('keydown event', {
             console.log('Keydown event', node.id, data);
             return [data]
         });
+
         eventHandlers.remove();
-        eventHandlers.add("keydown", function (e) {
+        eventHandlers.add('keydown', function (e) {
             task.run(e.keyCode);
             task.reset();
         });
@@ -63,6 +64,7 @@ var enterpressComp = new D3NE.Component('enter pressed', {
                 this.closed = [0];
             console.log('Print', node.id, inps);
         });
+
         outputs[0] = task.option(0);
         outputs[1] = task.option(1);
     }
@@ -73,17 +75,17 @@ var alertComp = new D3NE.Component('alert', {
 
         var ctrl = new D3NE.Control('<input type="text" value="Message...">', (el, c) => {
             function upd() {
-                c.putData("msg", el.value);
+                c.putData('msg', el.value);
             }
             el
-                .addEventListener("mousedown", function (e) {
+                .addEventListener('mousedown', function (e) {
                     e.stopPropagation();
                 });
-            el.addEventListener("keydown", function (e) {
+            el.addEventListener('keydown', function (e) {
                 e.stopPropagation();
             });
             el.value = c.getData('msg');
-            el.addEventListener("change", upd);
+            el.addEventListener('change', upd);
             upd();
         });
 

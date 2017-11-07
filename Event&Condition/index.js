@@ -1,4 +1,4 @@
-var container = document.querySelector("#d3ne")
+var container = document.querySelector('#d3ne')
 
 var menu = new D3NE.ContextMenu({
     'Alert': alertComp.builder,
@@ -11,124 +11,124 @@ var menu = new D3NE.ContextMenu({
 var editor = new D3NE.NodeEditor('glslsample@0.1.0', container, components, menu);
 
 editor.fromJSON({
-    "id": "glslsample@0.1.0",
-    "nodes": {
-        "2": {
-            "id": 2,
-            "data": {},
-            "group": null,
-            "inputs": [],
-            "outputs": [
+    'id': 'glslsample@0.1.0',
+    'nodes': {
+        '2': {
+            'id': 2,
+            'data': {},
+            'group': null,
+            'inputs': [],
+            'outputs': [
                 {
-                    "connections": [
+                    'connections': [
                         {
-                            "node": 3,
-                            "input": 0
+                            'node': 3,
+                            'input': 0
                         }
                     ]
                 }, {
-                    "connections": [
+                    'connections': [
                         {
-                            "node": 3,
-                            "input": 1
+                            'node': 3,
+                            'input': 1
                         }
                     ]
                 }
             ],
-            "position": [
+            'position': [
                 114, 133
             ],
-            "title": "Keydown event"
+            'title': 'Keydown event'
         },
-        "3": {
-            "id": 3,
-            "data": {},
-            "group": null,
-            "inputs": [
+        '3': {
+            'id': 3,
+            'data': {},
+            'group': null,
+            'inputs': [
                 {
-                    "connections": [
+                    'connections': [
                         {
-                            "node": 2,
-                            "output": 0
+                            'node': 2,
+                            'output': 0
                         }
                     ]
                 }, {
-                    "connections": [
+                    'connections': [
                         {
-                            "node": 2,
-                            "output": 1
+                            'node': 2,
+                            'output': 1
                         }
                     ]
                 }
             ],
-            "outputs": [
+            'outputs': [
                 {
-                    "connections": [
+                    'connections': [
                         {
-                            "node": 10,
-                            "input": 0
+                            'node': 10,
+                            'input': 0
                         }
                     ]
                 }, {
-                    "connections": [
+                    'connections': [
                         {
-                            "node": 11,
-                            "input": 0
+                            'node': 11,
+                            'input': 0
                         }
                     ]
                 }
             ],
-            "position": [
+            'position': [
                 443, 112
             ],
-            "title": "Enter pressed"
+            'title': 'Enter pressed'
         },
-        "10": {
-            "id": 10,
-            "data": {
-                "msg": "Enter!"
+        '10': {
+            'id': 10,
+            'data': {
+                'msg': 'Enter!'
             },
-            "group": null,
-            "inputs": [
+            'group': null,
+            'inputs': [
                 {
-                    "connections": [
+                    'connections': [
                         {
-                            "node": 3,
-                            "output": 0
+                            'node': 3,
+                            'output': 0
                         }
                     ]
                 }
             ],
-            "outputs": [],
-            "position": [
+            'outputs': [],
+            'position': [
                 773, 106
             ],
-            "title": "Alert"
+            'title': 'Alert'
         },
-        "11": {
-            "id": 11,
-            "data": {
-                "msg": "Another key pressed"
+        '11': {
+            'id': 11,
+            'data': {
+                'msg': 'Another key pressed'
             },
-            "group": null,
-            "inputs": [
+            'group': null,
+            'inputs': [
                 {
-                    "connections": [
+                    'connections': [
                         {
-                            "node": 3,
-                            "output": 1
+                            'node': 3,
+                            'output': 1
                         }
                     ]
                 }
             ],
-            "outputs": [],
-            "position": [
+            'outputs': [],
+            'position': [
                 766, 292
             ],
-            "title": "Alert"
+            'title': 'Alert'
         }
     },
-    "groups": {}
+    'groups': {}
 });
 
 var engine = new D3NE.Engine('glslsample@0.1.0', components);
