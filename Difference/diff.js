@@ -5,7 +5,6 @@ var eqCon = (c1, c2, target) => {
     return c1.node === c2.node && c1[target] === c2[target];
 }
 var diffCons = (cons1, cons2, target) => {
-    
     var removed = cons1.filter(c1 => !cons2.some(c2 => eqCon(c1, c2, target)));
     var added = cons2.filter(c2 => !cons1.some(c1 => eqCon(c1, c2, target)));
     
@@ -64,7 +63,3 @@ class Diff {
         return {removed, added, moved, datachanged, connects}
     }
 }
-
-var d = new Diff(data, data2);
-
-console.log(d.compare());

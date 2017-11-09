@@ -1,4 +1,4 @@
-var data = {
+var prev = {
     'id': 'demo@0.1.0',
     'nodes': {
         '1': {
@@ -28,14 +28,14 @@ var data = {
                 }
             ],
             'position': [
-                518, 157
+                558, 177
             ],
             'title': 'Add'
         },
         '2': {
             'id': 2,
             'data': {
-                'num': 1
+                'num': 7
             },
             'group': null,
             'inputs': [],
@@ -79,7 +79,7 @@ var data = {
     },
     'groups': {}
 };
-var data2 = {
+var current = {
     'id': 'demo@0.1.0',
     'nodes': {
         '1': {
@@ -116,7 +116,7 @@ var data2 = {
         '2': {
             'id': 2,
             'data': {
-                'num': 1
+                'num': 5
             },
             'group': null,
             'inputs': [],
@@ -131,7 +131,7 @@ var data2 = {
                 }
             ],
             'position': [
-                155.99999999999994, 92.11111111111111
+                266, 131
             ],
             'title': 'Number'
         },
@@ -147,13 +147,13 @@ var data2 = {
                     'connections': [
                         {
                             'node': 1,
-                            'input': 0
+                            'input': 1
                         }
                     ]
                 }
             ],
             'position': [
-                130.88888888888894, 348.2222222222222
+                272, 296
             ],
             'title': 'Number'
         }

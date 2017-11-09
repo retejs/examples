@@ -4,8 +4,9 @@ var componentNum = new D3NE.Component('Number', {
     builder: function(node) {
         var out1 = new D3NE.Output('Number', numSocket);
         var numControl = new D3NE.Control(
-            '<input type="number" value="1">',
+            '<input type="number">',
             (el, c) => {
+                el.value = c.getData('num') || 1;
                 function upd() {
                     c.putData('num', parseFloat(el.value));
                     editor.eventListener.trigger('change');
@@ -46,10 +47,10 @@ var componentAdd = new D3NE.Component('Add', {
             .addControl(numControl)
             .addOutput(out);
     },
-    worker(node, inputs, outputs) {
+    worker(node, inputs, outputs, editor) {
         var sum = inputs[0][0] + inputs[1][0];
 
-        editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
+        editor.nodes.find(n => n.id === node.id).controls[0].setValue(sum);
         outputs[0] = sum;
     }
 });

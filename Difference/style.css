@@ -4,8 +4,29 @@ body {
     height: 100%;
 }
 
+.node-editor {
+    background: rgba(255,255,255,0.7);
+    height: 100% !important;
+    z-index: 3;
+}
+
+
 #d3ne {
-    height: 100% !important
+    position: relative;
+}
+
+#d3ne_prev {
+    position: absolute;
+}
+.active{
+    z-index: 4;
+}
+
+#toggler{
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    z-index: 5;
 }
 
 .socket.number {
@@ -40,3 +61,4 @@ body {
     top: 10px;
     left: 10px;
 }
+
