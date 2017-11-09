@@ -73,7 +73,7 @@ var boxShadow = (color) => {
     return new Array(3).fill('0 0 25px ' + color).join(', ');
 }
 
-var d = new Diff(prev, current);
+var d = new D3NE.Diff(prev, current);
 var differences = d.compare();
 
 console.log(differences);
