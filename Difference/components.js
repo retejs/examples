@@ -3,21 +3,20 @@ var numSocket = new D3NE.Socket('number', 'Number value', 'hint');
 var componentNum = new D3NE.Component('Number', {
     builder: function(node) {
         var out1 = new D3NE.Output('Number', numSocket);
-        var numControl = new D3NE.Control(
-            '<input type="number">',
-            (el, c) => {
-                el.value = c.getData('num') || 1;
-                function upd() {
-                    c.putData('num', parseFloat(el.value));
-                    editor.eventListener.trigger('change');
-                }
-
-                el.addEventListener('input', upd);
-                el.addEventListener('mousedown', function(e) {e.stopPropagation()});// prevent node movement when selecting text in the input field
-
-                upd();
+        var numControl = new D3NE.Control('<input type="number">', (el, c) => {
+            el.value = c.getData('num') || 1;
+            function upd() {
+                c.putData('num', parseFloat(el.value));
+                editor.eventListener.trigger('change');
             }
-        );
+
+            el.addEventListener('input', upd);
+            el.addEventListener('mousedown', function(e) {
+                e.stopPropagation();
+            }); // prevent node movement when selecting text in the input field
+
+            upd();
+        });
 
         return node.addControl(numControl).addOutput(out1);
     },

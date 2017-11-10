@@ -153,7 +153,7 @@ var current = {
                 }
             ],
             'position': [
-                272, 296
+                0, 0
             ],
             'title': 'Number'
         }

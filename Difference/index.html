@@ -8,13 +8,24 @@
 </head>
 
 <body>
-    <button id="toggler">Go to previous version</button>
-    <div id="d3ne_prev" class="node-editor"></div>
-    <div id="d3ne" class="node-editor"></div>
+    <div class="editors">
+        <div class="editor-wrap"><label>Previous version</label><div id="d3ne_prev" class="node-editor"></div></div>
+       <div class="editor-wrap"><label>Current version</label><div id="d3ne" class="node-editor"></div></div>
+     </div>
+     
+     <div al-app="diffExample">
+      
+       <button id="toggler" @click="landscapeOrientation = !landscapeOrientation">Change orientation</button>
+     
+     <ul class="legend">
+       <li al-repeat="item in states", @click="toggleState(item)", :style.color="item.color" :style.opacity="item.status==1?1:0.5">{{item.name}}
+       </li>
+     </ul>
+     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/alight@0.14.0/alight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@4.10.2/build/d3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3-node-editor@0.6.1/build/d3-node-editor.js"></script>
+    <script src="../../D3 Node Editor/build/d3-node-editor.js"></script>
     <script src="data.js"></script>
     <script src="components.js"></script>
     <script src="index.js"></script>
