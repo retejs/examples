@@ -27,12 +27,14 @@ body{
   }
   .legend {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 1%;
+    right: 2%;
     z-index: 5;
   }
   .legend li {
     cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
   }
   .node-editor {
     background: rgba(255, 255, 255, 0.7);
@@ -45,9 +47,9 @@ body{
   }
   #toggler {
     position: absolute;
-    left: 45%;
+    left: 2%;
     width: 10%;
-    bottom: 5px;
+    bottom: 2%;
     z-index: 5;
   }
   .socket.number {

@@ -109,7 +109,7 @@ var current = {
                 }
             ],
             'position': [
-                518, 157
+                558, 177
             ],
             'title': 'Add'
         },
@@ -153,7 +153,7 @@ var current = {
                 }
             ],
             'position': [
-                0, 0
+                232, 296
             ],
             'title': 'Number'
         }

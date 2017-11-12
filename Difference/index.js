@@ -1,4 +1,3 @@
-
 var container = document.querySelector('#d3ne');
 var _container = document.querySelector('#d3ne_prev');
 var editors = document.querySelector('.editors');
@@ -17,7 +16,7 @@ var differences = {
 var menu = new D3NE.ContextMenu({
     Values: {
         Value: componentNum,
-        Action: function() {
+        Action: function () {
             alert('ok');
         }
     },
@@ -33,8 +32,6 @@ _editor.readOnly = true;
 editor.fromJSON(current);
 _editor.fromJSON(prev);
 
-editor.removeNode(editor.nodes[1]);
-
 var engine = new D3NE.Engine('demo@0.1.0', components);
 var _engine = new D3NE.Engine('demo@0.1.0', components);
 
@@ -42,18 +39,29 @@ engine.process(editor.toJSON(), null, editor);
 _engine.process(_editor.toJSON(), null, _editor);
 
 var updateView = t => {
+    if (d3.event && d3.event.sourceEvent.ctrlKey) return;
     editor.view.scale(t.k);
     editor.view.translate(t.x, t.y);
     _editor.view.scale(t.k);
     _editor.view.translate(t.x, t.y);
 };
 
-editor.eventListener.on('transform', updateView);
-_editor.eventListener.on('transform', updateView);
-editor.eventListener.trigger('change');
+editor
+    .eventListener
+    .on('transform', updateView);
+_editor
+    .eventListener
+    .on('transform', updateView);
+editor
+    .eventListener
+    .trigger('change');
 
-editor.view.resize();
-_editor.view.resize();
+editor
+    .view
+    .resize();
+_editor
+    .view
+    .resize();
 updateView(editor.view.transform);
 
 var COLOR = {
@@ -63,57 +71,134 @@ var COLOR = {
     datachanged: '#cc4'
 };
 var boxShadow = color => {
-    return new Array(2).fill('0 0 80px ' + color).join(', ');
+    return new Array(2)
+        .fill('0 0 80px ' + color)
+        .join(', ');
 };
 
 function diffExample($scope, el, a, env) {
     var states = $scope.states = [
-        { name: 'Data changed', key: 'datachanged', color: COLOR.datachanged, status: 0 },
-        { name: 'Position changed', key: 'moved', color: COLOR.moved, status: 0 },
-        { name: 'Node added', key: 'added', color: COLOR.added, status: 0 },
-        { name: 'Node removed', key: 'removed', color: COLOR.removed, status: 0 }
+        {
+            name: 'Data changed',
+            key: 'datachanged',
+            color: COLOR.datachanged,
+            status: 0
+        }, {
+            name: 'Position changed',
+            key: 'moved',
+            color: COLOR.moved,
+            status: 0
+        }, {
+            name: 'Node added',
+            key: 'added',
+            color: COLOR.added,
+            status: 0
+        }, {
+            name: 'Node removed',
+            key: 'removed',
+            color: COLOR.removed,
+            status: 0
+        }, {
+            name: 'Connections',
+            key: 'connections',
+            status: 0
+        }
     ];
 
     $scope.toggleState = state => {
         state.status = (state.status + 1) % 2;
         $scope.updateEditors();
     };
-  
+
     $scope.landscapeOrientation = true;
-    env.watch('landscapeOrientation', function(val) {
-        editors.style.flexDirection = val?'row':'column';
-        editor.view.resize();
-        _editor.view.resize();
-        editor.view.zoomAt(editor.nodes);
+    env.watch('landscapeOrientation', function (val) {
+        editors.style.flexDirection = val
+            ? 'row'
+            : 'column';
+        editor
+            .view
+            .resize();
+        _editor
+            .view
+            .resize();
+        editor
+            .view
+            .zoomAt(editor.nodes);
         updateView(editor.view.transform)
     });
 
-    function updateState(state, node) {
-
-        if (differences.get(state.key).includes(node.id)) {
-            if (state.status==1) 
-                node.el.style.boxShadow = boxShadow(state.color);
-        }
-        
+    function highlightNode(node, state) {
+        if (state.status===1 &&differences.get(state.key).includes(node.id))
+            node.style.boxShadow = boxShadow(state.color);
     }
-  
+
+    function updateEditorNodes(ed) {
+        ed
+            .nodes
+            .forEach(node => {
+                node.style.boxShadow = '';
+                highlightNode(node, states[0]);
+                highlightNode(node, states[1]);
+                highlightNode(node, states[2]);
+                highlightNode(node, states[3]);
+            });
+    }
+
+    function eachConnects(ed, callback) {
+        ed
+            .nodes
+            .forEach(node => {
+                var outputNode = node.id;
+
+                node.outputs.forEach((o, i) => {
+                    var outputIndex = i;
+
+                    o.connections.forEach(c => {
+                        var inputNode = c.input.node.id;
+                        var inputIndex = c.input.node.inputs.indexOf(c.input);
+                        
+                        callback(c, outputNode, outputIndex, inputNode, inputIndex);
+                    })
+                });
+            });
+    }
+
+    function updateEditorConnections(ed, target, handle) {
+        eachConnects(ed, (c, oNode, oIndex, iNode, iIndex) => {
+            
+            var diff = differences.get('connects').find(d => d.node === oNode && d.output === oIndex);
+
+            if (diff && diff[target].find(d => d.node === iNode && d.input === iIndex))
+                handle(c.style);
+            else if (differences.get(target).find(id => id === oNode))
+                handle(c.style);
+    
+        });
+    }
+
     $scope.updateEditors = () => {
         differences.compute();
 
-        editor.nodes.forEach(node => {
-            node.el.style.boxShadow = '';
-            states.forEach(state => {
-                updateState(state, node);
-            });
+        updateEditorNodes(editor);
+        updateEditorNodes(_editor);
+
+        updateEditorConnections(_editor, 'removed', (s) => {
+            if (states[4].status)
+                s.stroke = '#f53'
+            else
+                s.stroke = '';
         });
-    
-        _editor.nodes.forEach(node => {
-            node.el.style.boxShadow = '';
-            states.forEach(state => {
-                updateState(state, node);
-            });
+        updateEditorConnections(editor, 'added', (s) => {
+            if (states[4].status)
+                s.stroke = '#4f6'
+            else
+                s.stroke = ''
         });
-    };
-  
-    //$scope.updateEditors();
+
+        editor.view.update();
+        _editor.view.update();
+    }
+
+    $scope.updateEditors();
+
 }
