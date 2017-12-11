@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello D3 Node editor!</title>
+    <link href="./node_modules/d3-node-editor/build/d3-node-editor.css" rel="stylesheet">
+    <style>
+      body, html{
+        height: 100%;
+        margin: 0
+      }
+      .socket.number{
+        background: #96b38a;
+      }
+    </style>
+  </head>
+  <body>
+   <div class="node-editor" id="nodeEditor"></div>
+    <script>
+      var d3ne = require('./d3ne');
+      d3ne.createEditor(document.querySelector("#nodeEditor"));
+    </script>
+  </body>
+</html>
