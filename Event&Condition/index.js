@@ -1,134 +1,18 @@
 var container = document.querySelector('#d3ne')
 
 var menu = new D3NE.ContextMenu({
-    'Alert': alertComp.builder,
+    'Alert': alertComp,
     //
-    'Enter pressed': enterpressComp.builder,
+    'Enter pressed': enterpressComp,
     //
-    'Keydown': keydownComp.builder
+    'Keydown': keydownComp
 });
 
 var editor = new D3NE.NodeEditor('glslsample@0.1.0', container, components, menu);
 
-editor.fromJSON({
-    'id': 'glslsample@0.1.0',
-    'nodes': {
-        '2': {
-            'id': 2,
-            'data': {},
-            'group': null,
-            'inputs': [],
-            'outputs': [
-                {
-                    'connections': [
-                        {
-                            'node': 3,
-                            'input': 0
-                        }
-                    ]
-                }, {
-                    'connections': [
-                        {
-                            'node': 3,
-                            'input': 1
-                        }
-                    ]
-                }
-            ],
-            'position': [
-                114, 133
-            ],
-            'title': 'Keydown event'
-        },
-        '3': {
-            'id': 3,
-            'data': {},
-            'group': null,
-            'inputs': [
-                {
-                    'connections': [
-                        {
-                            'node': 2,
-                            'output': 0
-                        }
-                    ]
-                }, {
-                    'connections': [
-                        {
-                            'node': 2,
-                            'output': 1
-                        }
-                    ]
-                }
-            ],
-            'outputs': [
-                {
-                    'connections': [
-                        {
-                            'node': 10,
-                            'input': 0
-                        }
-                    ]
-                }, {
-                    'connections': [
-                        {
-                            'node': 11,
-                            'input': 0
-                        }
-                    ]
-                }
-            ],
-            'position': [
-                443, 112
-            ],
-            'title': 'Enter pressed'
-        },
-        '10': {
-            'id': 10,
-            'data': {
-                'msg': 'Enter!'
-            },
-            'group': null,
-            'inputs': [
-                {
-                    'connections': [
-                        {
-                            'node': 3,
-                            'output': 0
-                        }
-                    ]
-                }
-            ],
-            'outputs': [],
-            'position': [
-                773, 106
-            ],
-            'title': 'Alert'
-        },
-        '11': {
-            'id': 11,
-            'data': {
-                'msg': 'Another key pressed'
-            },
-            'group': null,
-            'inputs': [
-                {
-                    'connections': [
-                        {
-                            'node': 3,
-                            'output': 1
-                        }
-                    ]
-                }
-            ],
-            'outputs': [],
-            'position': [
-                766, 292
-            ],
-            'title': 'Alert'
-        }
-    },
-    'groups': {}
+editor.eventListener.on('connectioncreate connectionremove nodecreate noderemove', (_, p)=>{
+    if (p)
+        compile();
 });
 
 var engine = new D3NE.Engine('glslsample@0.1.0', components);
@@ -143,3 +27,10 @@ function getNode(id) {
         .nodes
         .find(n => n.id == id);
 }
+
+editor.fromJSON(data).then(() => {
+    
+    editor.view.resize();
+    editor.view.zoomAt(editor.nodes);
+    compile();
+});

@@ -19,15 +19,14 @@ var eventHandlers = {
     }
 };
 
-var keydownComp = new D3NE.Component('keydown event', {
-    builder: function () {
+var keydownComp = new D3NE.Component('Keydown event', {
+    builder(node) {
 
-        return new D3NE
-            .Node('Keydown event')
+        return node
             .addOutput(new D3NE.Output('', actionSocket))
             .addOutput(new D3NE.Output('Key code', dataSocket));
     },
-    worker: function (node, inputs, outputs) {
+    worker(node, inputs, outputs) {
 
         var task = new D3NE.Task(inputs, function (inps, data) {
             console.log('Keydown event', node.id, data);
@@ -45,17 +44,16 @@ var keydownComp = new D3NE.Component('keydown event', {
     }
 });
 
-var enterpressComp = new D3NE.Component('enter pressed', {
-    builder: function () {
+var enterpressComp = new D3NE.Component('Enter pressed', {
+    builder(node) {
 
-        return new D3NE
-            .Node('Enter pressed')
+        return node
             .addInput(new D3NE.Input('', actionSocket))
             .addInput(new D3NE.Input('Key code', dataSocket))
             .addOutput(new D3NE.Output('Tren', actionSocket))
             .addOutput(new D3NE.Output('Else', actionSocket));
     },
-    worker: function (node, inputs, outputs) {
+    worker(node, inputs, outputs) {
 
         var task = new D3NE.Task(inputs, function (inps) {
             if (inps[0][0] == 13) 
@@ -70,8 +68,8 @@ var enterpressComp = new D3NE.Component('enter pressed', {
     }
 });
 
-var alertComp = new D3NE.Component('alert', {
-    builder: function () {
+var alertComp = new D3NE.Component('Alert', {
+    builder(node) {
 
         var ctrl = new D3NE.Control('<input type="text" value="Message...">', (el, c) => {
             function upd() {
@@ -89,12 +87,11 @@ var alertComp = new D3NE.Component('alert', {
             upd();
         });
 
-        return new D3NE
-            .Node('Alert')
+        return node
             .addControl(ctrl)
             .addInput(new D3NE.Input('', actionSocket));
     },
-    worker: function (node, inputs, outputs) {
+    worker(node, inputs, outputs) {
 
         var task = new D3NE.Task(inputs, function () {
             console.log('Alert', node.id, node.data);

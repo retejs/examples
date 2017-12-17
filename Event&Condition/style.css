@@ -18,9 +18,3 @@ id {
     top: -6px;
     background: white;
 }
-
-button.compile {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
