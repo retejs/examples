@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import { D3NEComponent } from './d3ne/d3ne.component'
+import { D3NEComponent } from './d3ne/d3ne.component';
 
 @NgModule({
   declarations: [
