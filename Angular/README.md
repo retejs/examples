@@ -12,21 +12,13 @@ npm install --save d3-node-editor
 ```
 src/app/d3ne
 ```
-3. .angular-cli.json
-```
-"scripts": [
-    {"input": "../node_modules/d3-node-editor/build/d3-node-editor.js","output":"D3NE"},
-    {"input": "../node_modules/d3/build/d3.min.js","output":"d3"},
-    {"input": "../node_modules/alight/alight.js","output":"alight"}
-],
-```
-4. app.module.ts
+3. app.module.ts
 
 ```
 import { D3NEComponent } from './d3ne/d3ne.component'
 ```
 
-5. `<d3ne></d3ne>` inside `app.component.html`
+4. `<d3ne></d3ne>` inside `app.component.html`
 
 
 
