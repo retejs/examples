@@ -1,11 +1,15 @@
-/// <reference path="../../../node_modules/d3-node-editor/src/index.d.ts"/>
-import { Component, AfterViewInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+import {
+  Component, AfterViewInit,
+  OnChanges, ViewChild,
+  ElementRef, Input, ViewEncapsulation
+} from '@angular/core';
 
+import * as D3NE from 'd3-node-editor';
 @Component({
     selector: 'app-d3ne',
     template: '<div class="wrapper"><div #d3neEditor class="node-editor"></div></div>',
     styleUrls: ['./d3ne.component.css', '../../../node_modules/d3-node-editor/build/d3-node-editor.css'],
-    encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 })
 
 export class D3NEComponent implements AfterViewInit {

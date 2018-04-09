@@ -21,11 +21,7 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": [
-        {"input": "../node_modules/d3-node-editor/build/d3-node-editor.js","output":"D3NE"},
-        {"input": "../node_modules/d3/build/d3.min.js","output":"d3"},
-        {"input": "../node_modules/alight/alight.js","output":"alight"}
-      ],
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

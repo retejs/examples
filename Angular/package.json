@@ -21,15 +21,13 @@
     "@angular/platform-browser": "^5.2.5",
     "@angular/platform-browser-dynamic": "^5.2.5",
     "@angular/router": "^5.2.5",
-    "alight": "^0.14.1",
     "core-js": "^2.4.1",
-    "d3": "^4.13.0",
-    "d3-node-editor": "file:../../D3 Node Editor",
+    "d3-node-editor": "^0.6.11",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "@angular/cli": "1.6.0",
+    "@angular/cli": "^1.7.4",
     "@angular/compiler-cli": "^5.2.5",
     "@angular/language-service": "^5.2.5",
     "@types/jasmine": "~2.5.53",
