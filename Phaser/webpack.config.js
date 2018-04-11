@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const APP_DIR = path.resolve(__dirname, 'src');
 const BUILD_DIR = path.resolve(__dirname, 'dist');
@@ -41,6 +42,9 @@ module.exports = {
       new webpack.DefinePlugin({
         CANVAS_RENDERER: true,
         WEBGL_RENDERER: true,
+      }),
+      new HtmlWebpackPlugin({
+        template: 'index.html'
       })
     ],
     devServer: {
