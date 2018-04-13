@@ -5,6 +5,9 @@ import {
 } from '@angular/core';
 
 import * as D3NE from 'd3-node-editor';
+import { NumberControl } from './number-control';
+import { InputControl } from './input-control';
+
 @Component({
     selector: 'app-d3ne',
     template: '<div class="wrapper"><div #d3neEditor class="node-editor"></div></div>',
@@ -23,24 +26,8 @@ export class D3NEComponent implements AfterViewInit {
 
         const componentNum = new D3NE.Component('Number', {
            builder(node) {
-            const out1 = new D3NE.Output('Number', numSocket);
-            const numControl = new D3NE.Control('<input type="number">',
-                 (el: HTMLInputElement, c: any) => {
-                    el.value = c.getData('num') || 1;
-
-                    function upd() {
-                       c.putData('num', parseFloat(el.value));
-                    }
-
-                    el.addEventListener('input', () => {
-                       upd();
-                       this.editor.eventListener.trigger('change');
-                    });
-                   el.addEventListener('mousedown', function (e) { e.stopPropagation(); });
-                    // prevent node movement when selecting text in the input field
-                   upd();
-                 }
-              );
+             const out1 = new D3NE.Output('Number', numSocket);
+             const numControl = new InputControl(() => self.editor);
 
               return node.addControl(numControl).addOutput(out1);
            },
@@ -55,14 +42,7 @@ export class D3NEComponent implements AfterViewInit {
             const inp2 = new D3NE.Input('Number', numSocket);
             const out = new D3NE.Output('Number', numSocket);
 
-              const numControl = new D3NE.Control(
-                 '<input readonly type="number">',
-                 (el: HTMLInputElement, control: any) => {
-                    control.setValue = val => {
-                       el.value = val;
-                    };
-                 }
-              );
+             const numControl = new NumberControl();
 
               return node
                  .addInput(inp1)
@@ -72,8 +52,9 @@ export class D3NEComponent implements AfterViewInit {
            },
            worker(node, inputs, outputs) {
             const sum = inputs[0][0] + inputs[1][0];
-              (<any>self.editor.nodes.find(n => n.id === node.id).controls[0]).setValue(sum);
-              outputs[0] = sum;
+            const numControl: NumberControl = self.editor.nodes.find(n => n.id === node.id).controls[0];
+            numControl.setValue(sum);
+            outputs[0] = sum;
            }
         });
 
