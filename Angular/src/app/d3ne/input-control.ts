@@ -1,26 +1,27 @@
-import {Control, NodeEditor} from 'd3-node-editor';
+import { Control, NodeEditor } from 'd3-node-editor';
+import * as template from './input-control.template.html';
 
 export class InputControl extends Control {
 
   el: HTMLInputElement;
 
   constructor(private editor: () => NodeEditor) {
-    super('<input type="number">', InputControl.handler);
+    super(<any>template);
   }
 
-  static handler(el: HTMLInputElement, control: InputControl) {
-    control.el = el;
-    el.value = control.getData('num') || 1;
+  handler = (el: HTMLInputElement) => {
+    this.el = el;
+    el.value = this.getData('num') || 1;
 
     el.addEventListener('input', () => {
-      control.update();
-      control.editor().eventListener.trigger('change');
+      this.update();
+      this.editor().eventListener.trigger('change');
     });
     el.addEventListener('mousedown', function (e) {
       e.stopPropagation();
     });
     // prevent node movement when selecting text in the input field
-    control.update();
+    this.update();
   }
 
   update() {

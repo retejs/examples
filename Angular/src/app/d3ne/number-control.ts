@@ -1,16 +1,16 @@
 import { Control } from 'd3-node-editor';
-
+import * as template from './number-control.template.html';
 
 export class NumberControl extends Control {
 
   el: HTMLInputElement;
 
   constructor() {
-    super('<input readonly type="number">', NumberControl.handler);
+    super(<any>template);
   }
 
-  static handler(el: HTMLInputElement, control: NumberControl) {
-    control.el = el;
+  handler = (el: HTMLInputElement) => {
+    this.el = el;
   }
 
   public setValue(val) {
