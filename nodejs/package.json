@@ -1,0 +1,18 @@
+{
+  "name": "nodejs-d3ne",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "d3-node-editor": "^0.7.1",
+    "jsdom": "^11.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
