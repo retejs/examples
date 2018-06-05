@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import { D3NEComponent } from './d3ne/d3ne.component';
+import { ReteComponent } from './rete/rete.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    D3NEComponent
+    ReteComponent
   ],
   imports: [
     BrowserModule
