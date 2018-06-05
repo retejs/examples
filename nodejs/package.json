@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-d3ne",
+  "name": "nodejs-rete",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "d3-node-editor": "^0.7.3",
     "jsdom": "^11.8.0",
+    "rete": "^1.0.0-alpha.2",
     "ts-node": "^6.0.2",
     "typescript": "^2.8.3"
   },
