@@ -1,156 +1,187 @@
-var moduleManager = new D3NE.ModuleManager(['Input'], ['Output']);
+var numSocket = new Rete.Socket("Number");
+var floatSocket = new Rete.Socket("Float");
 
-function _createFieldControl(type, value, key, placeholder = '') {
-    return new D3NE.Control(
-        '<input type="' +
-            type +
-            '" value="' +
-            value +
-            '" placeholder="' +
-            placeholder +
-            '">',
-        (el, c) => {
-            function upd() {
-                if (type === 'number')
-                    c.putData(key, parseFloat(el.value) || 0);
-                else c.putData(key, el.value);
-                editor.eventListener.trigger('change');
-            }
+class TextControl extends Rete.Control {
 
-            el.addEventListener('input', upd);
-            el.addEventListener('mousedown', function(e) {
-                e.stopPropagation();
-            }); // prevent node movement when selecting text in the input field
-            el.addEventListener('contextmenu', function(e) {
-                e.stopPropagation();
-            }); // prevent custom context menu
-            upd();
-        }
-    );
+    constructor(emitter, key, readonly, type = 'text') {
+        super();
+        this.emitter = emitter;
+        this.key = key;
+        this.type = type;
+        this.template = `<input type="${type}" :readonly="readonly" :value="value" @input="change($event)"/>`;
+
+        this.scope = {
+            value: null,
+            readonly,
+            change: this.change.bind(this)
+        };
+    }
+
+    onChange() {}
+
+    change(e) {
+        this.scope.value = this.type === 'number' ? +e.target.value : e.target.value;
+        this.update();
+        this.onChange();
+    }
+
+    update() {
+        if (this.key)
+            this.putData(this.key, this.scope.value)
+        this.emitter.trigger('process');
+        this._alight.scan();
+    }
+
+    mounted() {
+        this.scope.value = this.getData(this.key) || (this.type === 'number' ? 0 : '...');
+        this.update();
+    }
+
+    setValue(val) {
+        this.scope.value = val;
+        this._alight.scan()
+    }
 }
 
-var numSocket = new D3NE.Socket('number', 'Number value', 'hint');
 
-var componentModule = new D3NE.Component('Module', {
-    builder: function(node) {
-        if (!node.data.module)
-            node.data.module = {
-                name: 'module',
-                data: {
-                    id: editor.id,
-                    nodes: {}
-                }
-            };
+class InputComponent extends Rete.Component {
 
-        moduleManager.getInputs(node.data.module.data).forEach(i => {
-            if (i.title == 'Input')
-                node.addInput(new D3NE.Input(i.name, numSocket));
-            /// else for another socket
-        });
+    constructor() {
+        super("Input");
+        this.module = {
+            nodeType: 'input',
+            socket: numSocket
+        }
+    }
 
-        moduleManager.getOutputs(node.data.module.data).forEach(o => {
-            node.addOutput(new D3NE.Output(o.name, numSocket));
-        });
+    builder(node) {
+        var out1 = new Rete.Output("Number", numSocket);
+        var ctrl = new TextControl(this.editor, 'name');
 
-        var ctrl = new D3NE.Control(
-            '<div class="module-control"><input readonly type="text"><button>Edit</button></d' +
-                'iv>',
-            (el, c) => {
-                el.querySelector('input').value = node.data.module.name;
-                el.querySelector('button').onmousedown = () => {
-                    openModule(node.data.module);
-                };
-            }
-        );
+        return node.addControl(ctrl).addOutput(out1);
+    }
+}
 
-        node.addControl(ctrl);
-    },
-    worker: moduleManager.workerModule.bind(moduleManager)
-});
 
-var componentInput = new D3NE.Component('Input', {
-    builder: function(node) {
-        var name = node.data.name || 'inp';
-        var out = new D3NE.Output('Number', numSocket);
-        var ctrl = _createFieldControl('text', name, 'name', 'type the name');
+class ModuleComponent extends Rete.Component {
 
-        node.addOutput(out).addControl(ctrl);
-    },
-    worker: moduleManager.workerInputs.bind(moduleManager)
-});
+    constructor() {
+        super("Module");
+        this.module = {
+            nodeType: 'module'
+        }
+    }
 
-var componentOutput = new D3NE.Component('Output', {
-    builder: function(node) {
-        var name = node.data.name || 'out';
-        var inp = new D3NE.Input('Number', numSocket);
-        var ctrl = _createFieldControl('text', name, 'name', 'type the name');
+    builder(node) {
+        var ctrl = new TextControl(this.editor, 'module');
+        ctrl.onChange = () => {
+            this.updateModuleSockets(node);
+            node._alight.scan();
+        }
+        return node.addControl(ctrl);
+    }
 
-        node.addInput(inp).addControl(ctrl);
-    },
-    worker: moduleManager.workerOutputs.bind(moduleManager)
-});
+    change(node, item) {
+        node.data.module = item;
+        this.editor.trigger('process');
+    }
+}
 
-var componentNum = new D3NE.Component('Number', {
-    builder: function(node) {
-        var out1 = new D3NE.Output('Number', numSocket);
-        var numControl = _createFieldControl('number', node.data.num, 'num');
 
-        node.addControl(numControl).addOutput(out1);
-    },
-    worker: function(node, inputs, outputs) {
+class OutputComponent extends Rete.Component {
+
+    constructor() {
+        super("Output");
+        this.module = {
+            nodeType: 'output',
+            socket: numSocket
+        }
+    }
+
+    builder(node) {
+        var inp = new Rete.Input("Number", numSocket);
+        var ctrl = new TextControl(this.editor, 'name');
+
+        return node.addControl(ctrl).addInput(inp);
+    }
+}
+
+
+class OutputFloatComponent extends Rete.Component {
+
+    constructor() {
+        super("Float Output");
+        this.module = {
+            nodeType: 'output',
+            socket: floatSocket
+        }
+    }
+
+    builder(node) {
+        var inp = new Rete.Input("Float", floatSocket);
+        var ctrl = new TextControl(this.editor, 'name');
+
+        return node.addControl(ctrl).addInput(inp);
+    }
+}
+
+class NumComponent extends Rete.Component {
+
+    constructor() {
+        super("Number");
+    }
+
+    builder(node) {
+        var out1 = new Rete.Output("Number", numSocket);
+        var ctrl = new TextControl(this.editor, 'num', false, 'number');
+
+        return node.addControl(ctrl).addOutput(out1);
+    }
+
+    worker(node, inputs, outputs) {
         outputs[0] = node.data.num;
     }
-});
+}
 
-var componentAdd = new D3NE.Component('Add', {
-    builder: function(node) {
-        var inp1 = new D3NE.Input('Number', numSocket);
-        var inp2 = new D3NE.Input('Number', numSocket);
-        var out = new D3NE.Output('Number', numSocket);
 
-        var numControl = new D3NE.Control(
-            '<input readonly type="number">',
-            (el, control) => {
-                control.setValue = val => {
-                    el.value = val;
-                };
-            }
-        );
+class AddComponent extends Rete.Component {
+    constructor() {
+        super("Add");
+    }
 
-        node
+    builder(node) {
+        var inp1 = new Rete.Input("Number", numSocket);
+        var inp2 = new Rete.Input("Number", numSocket);
+        var out = new Rete.Output("Number", numSocket);
+
+        inp1.addControl(new TextControl(this.editor, 'num1', false, 'number'))
+        inp2.addControl(new TextControl(this.editor, 'num2', false, 'number'))
+
+        return node
             .addInput(inp1)
             .addInput(inp2)
-            .addControl(numControl)
+            .addControl(new TextControl(this.editor, null, true))
             .addOutput(out);
-    },
-    worker: function(node, inputs, outputs, module) {
-        var sum = inputs[0][0] + inputs[1][0];
+    }
 
-        if (!module)
-            editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
+    worker(node, inputs, outputs, {
+        silent
+    } = {}) {
+        var n1 = inputs[0].length ? inputs[0][0] : node.data.num1;
+        var n2 = inputs[1].length ? inputs[1][0] : node.data.num2;
+        var sum = n1 + n2;
+
+        if (!silent)
+            this.editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
+
         outputs[0] = sum;
     }
-});
 
-var menu = new D3NE.ContextMenu({
-    Values: {
-        Value: componentNum,
-        Action: function() {
-            alert('ok');
-        }
-    },
-    Modularity: {
-        Module: componentModule,
-        Input: componentInput,
-        Output: componentOutput
-    },
-    Add: componentAdd
-});
+    created(node) {
+        console.log('created', node)
+    }
 
-var components = [
-    componentNum,
-    componentAdd,
-    componentModule,
-    componentInput,
-    componentOutput
-];
+    destroyed(node) {
+        console.log('destroyed', node)
+    }
+}

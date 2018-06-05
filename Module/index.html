@@ -1,22 +1,28 @@
 <html>
 
 <head>
-    <title>Module | D3NE Sample</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/d3-node-editor@0.6.0/build/d3-node-editor.css"></link>
+    <title>Modular Rete Sample</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css"></link>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="moduleheader">
-        <button onclick="saveModule()">Save module</button>
-        <input id="modulename" type="text">
+    <div al-app id="modules">
+        <div class="module" al-repeat="(key, val) in modules" @click="openModule(key)">
+            {{key}}
+        </div>
+        <button @click="addModule()">
+            Add
+        </button>
     </div>
-    <div id="d3ne" class="node-editor"></div>
+    <div id="rete" class="node-editor"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/alight@0.14.0/alight.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3@4.10.2/build/d3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3-node-editor@0.6.0/build/d3-node-editor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete@1.0.0-alpha.2/build/rete.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-alight-render-plugin@0.1.0/build/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-connection-plugin@0.1.0/build/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-context-menu-plugin@0.1.0/build/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-module-plugin@0.1.0/build/index.js"></script>
     <script src="data.js"></script>
     <script src="components.js"></script>
     <script src="index.js"></script>
