@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { initD3NE } from './d3ne'
+import { initRete } from './rete-editor'
 
 var config = {
     type: Phaser.AUTO,
@@ -54,5 +54,5 @@ function create ()
 window.onload = function () {
     const container = document.querySelector('#nodeEditor');
     console.log(container)
-    initD3NE(container);
+    initRete(container);
 }
