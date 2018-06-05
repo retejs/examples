@@ -2,8 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello D3 Node editor!</title>
-    <link href="./node_modules/d3-node-editor/build/d3-node-editor.css" rel="stylesheet">
+    <title>Hello Rete.js!</title>
     <style>
       body, html{
         height: 100%;
@@ -17,8 +16,8 @@
   <body>
    <div class="node-editor" id="nodeEditor"></div>
     <script>
-      var d3ne = require('./d3ne');
-      d3ne.createEditor(document.querySelector("#nodeEditor"));
+      var rete = require('./rete');
+      rete.createEditor(document.querySelector("#nodeEditor"));
     </script>
   </body>
 </html>
