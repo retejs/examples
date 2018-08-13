@@ -55,7 +55,7 @@ class InputComponent extends Rete.Component {
     }
 
     builder(node) {
-        var out1 = new Rete.Output("Number", numSocket);
+        var out1 = new Rete.Output('output', "Number", numSocket);
         var ctrl = new TextControl(this.editor, 'name');
 
         return node.addControl(ctrl).addOutput(out1);
@@ -75,6 +75,7 @@ class ModuleComponent extends Rete.Component {
     builder(node) {
         var ctrl = new TextControl(this.editor, 'module');
         ctrl.onChange = () => {
+            console.log(this)
             this.updateModuleSockets(node);
             node._alight.scan();
         }
@@ -99,7 +100,7 @@ class OutputComponent extends Rete.Component {
     }
 
     builder(node) {
-        var inp = new Rete.Input("Number", numSocket);
+        var inp = new Rete.Input('input', "Number", numSocket);
         var ctrl = new TextControl(this.editor, 'name');
 
         return node.addControl(ctrl).addInput(inp);
@@ -118,7 +119,7 @@ class OutputFloatComponent extends Rete.Component {
     }
 
     builder(node) {
-        var inp = new Rete.Input("Float", floatSocket);
+        var inp = new Rete.Input('float', "Float", floatSocket);
         var ctrl = new TextControl(this.editor, 'name');
 
         return node.addControl(ctrl).addInput(inp);
@@ -132,14 +133,14 @@ class NumComponent extends Rete.Component {
     }
 
     builder(node) {
-        var out1 = new Rete.Output("Number", numSocket);
+        var out1 = new Rete.Output('num', "Number", numSocket);
         var ctrl = new TextControl(this.editor, 'num', false, 'number');
 
         return node.addControl(ctrl).addOutput(out1);
     }
 
     worker(node, inputs, outputs) {
-        outputs[0] = node.data.num;
+        outputs['num'] = node.data.num;
     }
 }
 
@@ -150,9 +151,9 @@ class AddComponent extends Rete.Component {
     }
 
     builder(node) {
-        var inp1 = new Rete.Input("Number", numSocket);
-        var inp2 = new Rete.Input("Number", numSocket);
-        var out = new Rete.Output("Number", numSocket);
+        var inp1 = new Rete.Input('num1', "Number", numSocket);
+        var inp2 = new Rete.Input('num2', "Number", numSocket);
+        var out = new Rete.Output('num', "Number", numSocket);
 
         inp1.addControl(new TextControl(this.editor, 'num1', false, 'number'))
         inp2.addControl(new TextControl(this.editor, 'num2', false, 'number'))
@@ -160,21 +161,21 @@ class AddComponent extends Rete.Component {
         return node
             .addInput(inp1)
             .addInput(inp2)
-            .addControl(new TextControl(this.editor, null, true))
+            .addControl(new TextControl(this.editor, 'preview', true))
             .addOutput(out);
     }
 
     worker(node, inputs, outputs, {
         silent
     } = {}) {
-        var n1 = inputs[0].length ? inputs[0][0] : node.data.num1;
-        var n2 = inputs[1].length ? inputs[1][0] : node.data.num2;
+        var n1 = inputs['num1'].length ? inputs['num1'][0] : node.data.num1;
+        var n2 = inputs['num2'].length ? inputs['num2'][0] : node.data.num2;
         var sum = n1 + n2;
 
         if (!silent)
-            this.editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
+            this.editor.nodes.find(n => n.id == node.id).controls.get('preview').setValue(sum);
 
-        outputs[0] = sum;
+        outputs['num'] = sum;
     }
 
     created(node) {
