@@ -1,42 +1,44 @@
 import { Control } from 'rete';
 import * as template from './number-control.template.html';
 
-export class NumControl extends Control {
+const VueNumControl = {
+  props: ['readonly', 'emitter', 'ikey', 'getData', 'putData'],
+  template: '<input type="number" :readonly="readonly" :value="value" @input="change($event)"/>',
+  data() {
+    return {
+      value: 0,
+    };
+  },
+  methods: {
+    change(e) {
+      this.value = +e.target.value;
+      this.update();
+    },
+    update() {
+      if (this.ikey) {
+        this.putData(this.ikey, this.value);
+      }
+      this.emitter.trigger('process');
+    }
+  },
+  mounted() {
+    this.value = this.getData(this.ikey);
+  }
+}
 
-  template: any = template;
-  scope = {
-    value: 0,
-    readonly: false,
-    change: this.change.bind(this)
-  };
-  _alight: any;
+export class NumControl extends Control {
+  component: any;
+  props: any;
+  vueContext: any;
 
   constructor(public emitter, public key, readonly = false) {
-    super();
+    super(key);
 
-    this.scope.readonly = readonly;
-  }
-
-  change(e) {
-    this.scope.value = +e.target.value;
-    this.update();
-  }
-
-  update() {
-    if (this.key) {
-      this.putData(this.key, this.scope.value);
-    }
-    this.emitter.trigger('process');
-    this._alight.scan();
-  }
-
-  mounted() {
-    this.scope.value = this.getData(this.key) || 0;
-    this.update();
+    this.component = VueNumControl;
+    this.props = { emitter, ikey: key, readonly };
   }
 
   setValue(val) {
-    this.scope.value = val;
-    this._alight.scan();
+    this.vueContext.value = val;
   }
 }

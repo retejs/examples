@@ -5,8 +5,8 @@ import {
 } from '@angular/core';
 
 import { NodeEditor, Engine } from 'rete';
-import * as ConnectionPlugin from 'rete-alight-render-plugin';
-import * as AlightRenderPlugin from 'rete-connection-plugin';
+import * as ConnectionPlugin from 'rete-connection-plugin';
+import * as VueRenderPlugin from 'rete-vue-render-plugin';
 import { NumComponent } from './components/number-component';
 import { AddComponent } from './components/add-component';
 
@@ -29,11 +29,11 @@ export class ReteComponent implements AfterViewInit {
 
     const components = [new NumComponent(), new AddComponent()];
 
-    const editor = new NodeEditor('demo@0.1.0', container);
-    editor.use(ConnectionPlugin, { curvature: 0.4 });
-    editor.use(AlightRenderPlugin);
+    const editor = new NodeEditor('demo@0.2.0', container);
+    editor.use(ConnectionPlugin);
+    editor.use(VueRenderPlugin);
 
-    const engine = new Engine('demo@0.1.0');
+    const engine = new Engine('demo@0.2.0');
 
     components.map(c => {
       editor.register(c);
@@ -52,8 +52,8 @@ export class ReteComponent implements AfterViewInit {
     editor.addNode(n2);
     editor.addNode(add);
 
-    editor.connect(n1.outputs[0], add.inputs[0]);
-    editor.connect(n2.outputs[0], add.inputs[1]);
+    editor.connect(n1.outputs.get('num'), add.inputs.get('num1'));
+    editor.connect(n2.outputs.get('num'), add.inputs.get('num2'));
 
 
     editor.on('process nodecreated noderemoved connectioncreated connectionremoved', async () => {
