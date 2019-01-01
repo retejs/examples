@@ -7,14 +7,18 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "target": "es6",
     "allowJs": true,
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2017",
+      "es2015",
       "dom"
     ]
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "node_modules/rete/build/*.js"
+  ]
 }
