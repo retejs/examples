@@ -7,6 +7,7 @@ import {
 import { NodeEditor, Engine } from 'rete';
 import * as ConnectionPlugin from 'rete-connection-plugin';
 import * as VueRenderPlugin from 'rete-vue-render-plugin';
+import * as ContextMenuPlugin from 'rete-context-menu-plugin';
 import { NumComponent } from './components/number-component';
 import { AddComponent } from './components/add-component';
 
@@ -32,6 +33,7 @@ export class ReteComponent implements AfterViewInit {
     const editor = new NodeEditor('demo@0.2.0', container);
     editor.use(ConnectionPlugin);
     editor.use(VueRenderPlugin);
+    editor.use(ContextMenuPlugin);
 
     const engine = new Engine('demo@0.2.0');
 
