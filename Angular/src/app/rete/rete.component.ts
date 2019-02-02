@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 import { NodeEditor, Engine } from 'rete';
-import * as ConnectionPlugin from 'rete-connection-plugin';
+import ConnectionPlugin from 'rete-connection-plugin';
 import * as VueRenderPlugin from 'rete-vue-render-plugin';
 import * as ContextMenuPlugin from 'rete-context-menu-plugin';
 import { NumComponent } from './components/number-component';
