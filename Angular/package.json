@@ -26,9 +26,10 @@
     "core-js": "^2.4.1",
     "rete": "^1.1.0",
     "rete-connection-plugin": "^0.4.1",
-    "rete-context-menu-plugin": "^0.3.3",
-    "rete-vue-render-plugin": "^0.2.6",
+    "rete-context-menu-plugin": "^0.3.4",
+    "rete-vue-render-plugin": "^0.3.0",
     "rxjs": "^6.3.3",
+    "vue": "^2.6.5",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

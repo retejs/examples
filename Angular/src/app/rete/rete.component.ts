@@ -6,8 +6,8 @@ import {
 
 import { NodeEditor, Engine } from 'rete';
 import ConnectionPlugin from 'rete-connection-plugin';
-import * as VueRenderPlugin from 'rete-vue-render-plugin';
-import * as ContextMenuPlugin from 'rete-context-menu-plugin';
+import VueRenderPlugin from 'rete-vue-render-plugin';
+import ContextMenuPlugin from 'rete-context-menu-plugin';
 import { NumComponent } from './components/number-component';
 import { AddComponent } from './components/add-component';
 
