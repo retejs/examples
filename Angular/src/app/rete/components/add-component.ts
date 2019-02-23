@@ -7,7 +7,7 @@ export class AddComponent extends Component {
     super('Add');
   }
 
-  builder(node) {
+  async builder(node) {
     const inp1 = new Input('num1', 'Number', numSocket);
     const inp2 = new Input('num2', 'Number', numSocket);
     const out = new Output('num', 'Number', numSocket);
