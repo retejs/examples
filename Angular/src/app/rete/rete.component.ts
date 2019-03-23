@@ -58,7 +58,7 @@ export class ReteComponent implements AfterViewInit {
     editor.connect(n2.outputs.get('num'), add.inputs.get('num2'));
 
 
-    editor.on('process nodecreated noderemoved connectioncreated connectionremoved', (async () => {
+    editor.on('process nodecreated noderemoved connectioncreated connectionremoved' as any, (async () => {
       await engine.abort();
       await engine.process(editor.toJSON());
     }) as any);
