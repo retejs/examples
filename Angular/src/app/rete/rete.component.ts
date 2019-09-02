@@ -1,21 +1,16 @@
-import {
-  Component, AfterViewInit,
-  OnChanges, ViewChild,
-  ElementRef, Input, ViewEncapsulation
-} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
 import { NodeEditor, Engine } from 'rete';
 import ConnectionPlugin from 'rete-connection-plugin';
-import VueRenderPlugin from 'rete-vue-render-plugin';
 import ContextMenuPlugin from 'rete-context-menu-plugin';
 import { NumComponent } from './components/number-component';
 import { AddComponent } from './components/add-component';
+import AngularRenderPlugin from 'rete-angular-render-plugin';
 
 @Component({
-    selector: 'app-rete',
-    template: '<div class="wrapper"><div #nodeEditor class="node-editor"></div></div>',
-    styleUrls: ['./rete.component.css'],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-rete',
+  template: '<div class="wrapper"><div #nodeEditor class="node-editor"></div></div>',
+  styleUrls: ['./rete.component.css'],
 })
 
 export class ReteComponent implements AfterViewInit {
@@ -24,15 +19,13 @@ export class ReteComponent implements AfterViewInit {
   editor = null;
 
   async ngAfterViewInit() {
-    const self = this;
-
     const container = this.el.nativeElement;
 
     const components = [new NumComponent(), new AddComponent()];
 
     const editor = new NodeEditor('demo@0.2.0', container);
     editor.use(ConnectionPlugin);
-    editor.use(VueRenderPlugin);
+    editor.use(AngularRenderPlugin)//, { component: MyNodeComponent });
     editor.use(ContextMenuPlugin);
 
     const engine = new Engine('demo@0.2.0');

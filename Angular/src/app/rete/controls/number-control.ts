@@ -1,44 +1,57 @@
+import { Component, Input, Type } from '@angular/core';
 import { Control } from 'rete';
-import Vue from 'vue/dist/vue.esm';
+import { AngularControl } from 'rete-angular-render-plugin';
 
-const VueNumControl = Vue.component('num', {
-  props: ['readonly', 'emitter', 'ikey', 'getData', 'putData'],
-  template: '<input type="number" :readonly="readonly" :value="value" @input="change($event)"/>',
-  data() {
-    return {
-      value: 0,
-    };
-  },
-  methods: {
-    change(e) {
-      this.value = +e.target.value;
-      this.update();
-    },
-    update() {
-      if (this.ikey) {
-        this.putData(this.ikey, this.value);
-      }
-      this.emitter.trigger('process');
+@Component({
+  template: `<input type="number" [value]="value" [readonly]="readonly" (change)="change(+$event.target.value)">`,
+  styles: [`
+    input {
+      border-radius: 30px;
+      background-color: white;
+      padding: 2px 6px;
+      border: 1px solid #999;
+      font-size: 110%;
+      width: 140px;
+      box-sizing: border-box;
     }
-  },
-  mounted() {
-    this.value = this.getData(this.ikey);
+  `]
+})
+export class NumberComponent {
+  @Input() value!: number;
+  @Input() readonly!: boolean;
+  @Input() change!: Function;
+  @Input() mounted!: Function;
+
+  ngOnInit() {
+    this.mounted();
   }
-});
+}
 
-export class NumControl extends Control {
-  component: any;
-  props: any;
-  vueContext: any;
-
+export class NumControl extends Control implements AngularControl {
+  component: Type<NumberComponent>
+  props: {[key: string]: unknown}
+  
   constructor(public emitter, public key, readonly = false) {
     super(key);
-
-    this.component = VueNumControl;
-    this.props = { emitter, ikey: key, readonly };
+    
+    this.component = NumberComponent;
+    this.props = {
+      readonly,
+      change: v => this.onChange(v),
+      value: 0,
+      mounted: () => {
+        this.setValue(+(this.getData(key) as any) || 0)
+      }
+    };
   }
 
-  setValue(val) {
-    this.vueContext.value = val;
+  onChange(val: number) {
+    this.setValue(val);
+    this.emitter.trigger('process');
+  }
+
+  setValue(val: number) {
+    this.props.value = +val;
+    this.putData(this.key, this.props.value)
   }
 }

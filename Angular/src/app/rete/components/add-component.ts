@@ -1,10 +1,16 @@
-import { Component, Input, Output } from 'rete';
+import { Component, Input, Output, Node } from 'rete';
 import { numSocket } from '../sockets';
 import { NumControl } from '../controls/number-control';
+import { AngularComponent, AngularComponentData } from 'rete-angular-render-plugin';
+import { MyNodeComponent } from './node/node.component';
 
-export class AddComponent extends Component {
+export class AddComponent extends Component implements AngularComponent {
+  data: AngularComponentData;
+
   constructor() {
     super('Add');
+    this.data.render = 'angular';
+    this.data.component = MyNodeComponent;
   }
 
   async builder(node) {
