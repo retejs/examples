@@ -5,7 +5,7 @@ import ConnectionPlugin from 'rete-connection-plugin';
 // import ContextMenuPlugin from 'rete-context-menu-plugin';
 import { NumComponent } from './components/number-component';
 import { AddComponent } from './components/add-component';
-import AngularRenderPlugin from 'rete-angular-render-plugin';
+import {AngularRenderPlugin} from 'rete-angular-render-plugin';
 
 @Component({
   selector: 'app-rete',
