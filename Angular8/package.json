@@ -21,7 +21,7 @@
     "@angular/platform-browser-dynamic": "~8.0.0",
     "@angular/router": "~8.0.0",
     "rete": "^1.4.1",
-    "rete-angular-render-plugin": "^0.1.1",
+    "rete-angular-render-plugin": "^0.2.0-rc.1",
     "rete-connection-plugin": "^0.8.3",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
