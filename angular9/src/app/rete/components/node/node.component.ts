@@ -1,10 +1,11 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { NodeComponent, NodeService } from 'rete-angular-render-plugin';
 
 @Component({
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.sass'],
-  providers: [NodeService]
+  providers: [NodeService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MyNodeComponent extends NodeComponent {
   constructor(protected service: NodeService, protected cdr: ChangeDetectorRef) {
