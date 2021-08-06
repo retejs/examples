@@ -13,7 +13,7 @@
     "rete-area-plugin": "^0.2.1",
     "rete-connection-plugin": "^0.9.0",
     "rete-context-menu-plugin": "^0.6.0-rc.1",
-    "rete-vue-render-plugin": "file:../../vue-render-plugin/rete-vue-render-plugin-0.5.1.tgz",
+    "rete-vue-render-plugin": "^1.0.0-rc1",
     "vue": "^3.0.0"
   },
   "devDependencies": {
