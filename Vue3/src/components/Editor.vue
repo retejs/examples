@@ -11,6 +11,7 @@ import ConnectionPlugin from "rete-connection-plugin";
 import VueRenderPlugin from "rete-vue-render-plugin";
 import ContextMenuPlugin from "rete-context-menu-plugin";
 import AreaPlugin from "rete-area-plugin";
+import VueNumControl from './NumControl.vue'
 
 export default {
   data() {
@@ -20,30 +21,6 @@ export default {
   },
   async mounted() {
     var numSocket = new Socket('Number value');
-
-    var VueNumControl = {
-      props: ['readonly', 'emitter', 'ikey', 'getData', 'putData'],
-      template: '<input type="number" :readonly="readonly" :value="value" @input="change($event)" @dblclick.stop="" @pointerdown.stop="" @pointermove.stop=""/>',
-      data() {
-        return {
-          value: 0,
-        }
-      },
-      methods: {
-        change(e){
-          this.value = +e.target.value;
-          this.update();
-        },
-        update() {
-          if (this.ikey)
-            this.putData(this.ikey, this.value)
-          this.emitter.trigger('process');
-        }
-      },
-      mounted() {
-        this.value = this.getData(this.ikey);
-      }
-    }
 
     class NumControl extends Control {
 
