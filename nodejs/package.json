@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jsdom": "^11.8.0",
+    "jsdom": "^16.5.0",
     "rete": "^1.0.0-alpha.2",
     "ts-node": "^6.0.2",
     "typescript": "^2.8.3"
