@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2016", "DOM"],
+    "outDir": "build"
+  },
+  "include": [
+    "*.ts"
+  ]
+}

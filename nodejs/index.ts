@@ -1,9 +1,11 @@
-import  { Engine, Component } from 'rete/build/rete.engine';
+import  { Engine, Component } from 'rete';
 
 class Comp extends Component {
     constructor() {
         super('component1');
     }
+
+    async builder() {}
 
     worker(node, inputs, outputs) {
         console.log('worker')
@@ -20,8 +22,10 @@ engine.process({
         1: {
             name: 'component1',
             id: 1,
-            inputs: [],
-            outputs: []
+            inputs: {},
+            outputs: {},
+            data: {},
+            position: [0, 0]
         }
     }
 }).then(console.log)
